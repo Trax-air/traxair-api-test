@@ -1,0 +1,100 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.1.0",
+        "title": "TraxAir Test API"
+    },
+    "host": "api.trax-air.com",
+    "basePath": "/v1",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/track": {
+            "get": {
+                "description": "Gets the `Track` objects that you created.\n",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "maximum number of results to return",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "title": "ArrayOfTracks",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/track"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new track.",
+                "operationId": "addTrack",
+                "parameters": [
+                    {
+                        "name": "track",
+                        "in": "body",
+                        "description": "Track to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/track"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Track creation was successful",
+                        "schema": {
+                            "$ref": "#/definitions/track"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "track": {
+            "title": "Track",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "readOnly": true
+                },
+                "url": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "artist": {
+                    "$ref": "#/definitions/artist"
+                }
+            }
+        },
+        "artist": {
+            "title": "Artist",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
