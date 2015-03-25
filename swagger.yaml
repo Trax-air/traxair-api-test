@@ -27,7 +27,7 @@ paths:
       # Describe this verb here. Note: you can use markdown
       description: |
         Gets the `Track` objects that you created.
-      operationId: getTrack
+      operationId: getTracks
       # This is array of GET operation parameters:
       parameters:
         - name: limit
@@ -63,6 +63,25 @@ paths:
           description: Track creation was successful
           schema:
             $ref: '#/definitions/Track'
+  /track/{trackId}:
+    get:
+      description: |
+        Gets the `Track` objects that you created.
+      operationId: getTrack
+      parameters:
+        - name: trackId
+          in: path
+          description: The id of the track identification to retrieve
+          type: string
+        
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            $ref: '#/definitions/Track'
   /identify/tracklist/{identificationId}:
     get:
       description: Compute a tracklist from an URL.
@@ -76,15 +95,8 @@ paths:
         '200':
           description: Successful
           schema:
-            # Since we want to do reruns, maybe this should be an array
-            # and the tracklistIdentification should contain the date of identification
-            # In this case we should add a parameter to sort by date.
-            # Or, we could just show the last identification.
             $ref: '#/definitions/TracklistIdentification'
   /identify/tracklist/{identificationId}/rerun:
-    # We create a dedicated path for reruns since it contains a specific query payload.
-    # We could also POST directly on /identify/tracklist/{identificationId}/, but maybe we
-    # would like to perform more operations than a rerun in the future
     post:
       description: Rerun a track identification.
       operationId: rerunTracklistIdentification
@@ -98,12 +110,31 @@ paths:
           description: Describes what parts of the file to rerun
           required: true
           schema:
-            $ref: '#/definitions/Track'
+            $ref: '#/definitions/RerunParams'
       responses:
         '201':
           description: Successful
           schema:
             $ref: '#/definitions/RerunParams'
+  /identify/tracklist/{identificationId}/metadata:
+    put:
+      description: Modify the metadata for a tracklist identification
+      operationId: changeTracklistMetadata
+      parameters:
+        - name: identificationId
+          in: path
+          description: The id of the tracklist identification
+          type: string
+        - name: metadata
+          in: body
+          description: The metadata to change
+          schema:
+            $ref: '#/definitions/MetadataIdentification'
+      responses:
+        '204':
+          description: Successfully updated
+        '405':
+          description: Invalid input
   /identify/tracklist/url:
     post:
       description: Identify a track from an URL.
@@ -138,7 +169,7 @@ paths:
             $ref: '#/definitions/TracklistIdentification'
   /identify/track/{identificationId}:
     get:
-      description: Compute a tracklist from an URL.
+      description: Identify a tracklist from an URL.
       operationId: getTracklist
       parameters:
         - name: identificationId
@@ -149,15 +180,8 @@ paths:
         '200':
           description: Successful
           schema:
-            # Since we want to do reruns, maybe this should be an array
-            # and the trackIdentification should contain the date of identification.
-            # In this case we should add a parameter to sort by date.
-            # Or, we could just show the last identification.
             $ref: '#/definitions/TrackIdentification'
   /identify/track/{identificationId}/rerun:
-    # We create a dedicated path for reruns so that this operation remains
-    # consistent with tracklist identification rerun. However here no payload
-    # is needed
     post:
       description: Rerun a track identification.
       operationId: rerunTrackIdentification
@@ -171,9 +195,28 @@ paths:
           description: Successful
           schema:
             $ref: '#/definitions/TrackIdentification'
+  /identify/track/{identificationId}/metadata:
+    put:
+      description: Modify the metadata for a track identification
+      operationId: changeTrackMetadata
+      parameters:
+        - name: identificationId
+          in: path
+          description: The id of the track identification
+          type: string
+        - name: metadata
+          in: body
+          description: The metadata to change
+          schema:
+            $ref: '#/definitions/MetadataIdentification'
+      responses:
+        '204':
+          description: Successfully updated
+        '405':
+          description: Invalid input
   /identify/track/url:
     post:
-      description: Compute a tracklist from an URL.
+      description: Identify a track from an URL.
       operationId: addTrack
       parameters:
         - name: url
@@ -203,10 +246,20 @@ paths:
           description: Trackl identification request creation was successful
           schema:
             $ref: '#/definitions/TrackIdentification'
-
+  /me/billing:
+    get:
+      description: Returns the current and past billing information.
+      operationId: myBills
+      responses:
+        '200':
+          description: Successful
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Bills'
   /me/callbacks:
     get:
-      description: Returns the callbacks that you set up.
+      description: Returns the callbacks that you set up to be notified of changes in tracklist or track identification, or track territory.
       operationId: myCallbacks
       responses:
         '200':
@@ -215,6 +268,7 @@ paths:
             $ref: '#/definitions/Callbacks'
     put:
       description: Update your callbacks
+      operationId: changeCallbacks
       parameters:
         - in: formData
           name: callbackTrackIdentification
@@ -223,12 +277,10 @@ paths:
         - in: formData
           name: callbackTracklistIdentification
           description: Update callbackTracklistIdentification
-          required: true
           type: string
         - in: formData
           name: callbackTrackTerritoryChange
           description: Update callbackTrackTerritoryChange
-          required: true
           type: string
       responses:
         '204':
@@ -236,7 +288,36 @@ paths:
         '405':
           description: Invalid input
 
+
+
 definitions:
+  MetadataIdentification:
+    title: MetadataIdentification
+    type: object
+    properties:
+      sourceUrl:
+        type: string
+        format: url
+      curator:
+        type: string
+      territoryCode:
+        type: string
+      latitude:
+        type: string
+      longitude:
+        type: string
+      genre:
+        type: string
+      # radio stream, live, podcast
+      type:
+        type: string
+      source:
+        type: string
+      date:
+        type: string
+        format: date
+      additionalData:
+        type: string
   TracklistIdentification:
     title: TracklistIdentification
     type: object
@@ -244,20 +325,32 @@ definitions:
       id:
         type: string
         readOnly: true
-      tracklist:
-        $ref: '#/definitions/Tracklist'
+      metadata:
+        $ref: '#/definitions/MetadataIdentification'
+      identifications:
+        type: array
+        items:
+          identification:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date-time
+              done:
+                type: boolean
+              tracklist:
+                $ref: '#/definitions/Tracklist'
   RerunParams:
     title: RerunParams
     type: array
     items:
       segment:
-        type: object
         properties:
           start:
-            type: int
+            type: integer
             min: 0
           end:
-            type: int
+            type: integer
             min: 0
   Tracklist:
     title: Tracklist
@@ -266,15 +359,33 @@ definitions:
       id:
         type: string
         readOnly: true
+      segments:
+        type: array
+        items:
+          segment:
+            type: object
+            properties:
+              track:
+                $ref: '#/definitions/Track'
+              start:
+                type: integer
+                min: 0
+              end:
+                type: integer
+                min: 0
   TrackIdentification:
-    title: TracklistIdentification
+    title: TrackIdentification
     type: object
     properties:
       id:
         type: string
         readOnly: true
-      tracklist:
-        $ref: '#/definitions/Track'
+      metadata:
+        $ref: '#/definitions/MetadataIdentification'
+      identifications:
+        type: array
+        items:
+          $ref: '#/definitions/Track'
   Track:
     title: Track
     type: object
@@ -287,8 +398,23 @@ definitions:
         readOnly: true
       title:
         type: string
-      artist:
-        $ref: '#/definitions/Artist'
+      genre:
+        type: string
+      artists:
+        type: array
+        items:
+          $ref: '#/definitions/Artist'
+      release:
+        $ref: '#/definitions/Release'
+      UPC:
+        type: string
+      duration:
+        type: integer
+      territory:
+        type: string
+      releaseDate:
+        type: string
+        format: date
   Artist:
     title: Artist
     type: object
@@ -297,13 +423,45 @@ definitions:
         type: string
       name:
         type: string
+      role:
+        # Main or remixer
+        type: string
+  Release:
+    title: Release
+    type: object
+    properties:
+      id:
+        type: string
+      title:
+        type: string
+      label:
+        type: string
+      publisher:
+        type: string
+      cover:
+        type: string
+        format: url
   Callbacks:
     title: Callbacks
     type: object
     properties:
       callbackTrackIdentification:
         type: string
+        format: url
       callbackTracklistIdentification:
         type: string
+        format: url
       callbackTrackTerritoryChange:
         type: string
+        format: url
+  Bills:
+    title: Bills
+    type: object
+    properties:
+      date:
+        type: string
+        format: date
+      hoursAnalyzed:
+        type: integer
+      price:
+        type: number
