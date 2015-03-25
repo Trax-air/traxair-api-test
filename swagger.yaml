@@ -330,28 +330,27 @@ definitions:
       identifications:
         type: array
         items:
-          identification:
-            type: object
-            properties:
-              date:
-                type: string
-                format: date-time
-              done:
-                type: boolean
-              tracklist:
-                $ref: '#/definitions/Tracklist'
+          type: object
+          properties:
+            date:
+              type: string
+              format: date-time
+            done:
+              type: boolean
+            tracklist:
+              $ref: '#/definitions/Tracklist'
   RerunParams:
     title: RerunParams
     type: array
     items:
-      segment:
-        properties:
-          start:
-            type: integer
-            min: 0
-          end:
-            type: integer
-            min: 0
+      type: object
+      properties:
+        start:
+          type: integer
+          min: 0
+        end:
+          type: integer
+          min: 0
   Tracklist:
     title: Tracklist
     type: object
@@ -362,17 +361,17 @@ definitions:
       segments:
         type: array
         items:
-          segment:
-            type: object
-            properties:
-              track:
-                $ref: '#/definitions/Track'
-              start:
-                type: integer
-                min: 0
-              end:
-                type: integer
-                min: 0
+          type: object
+          properties:
+            track:
+              $ref: '#/definitions/Track'
+            start:
+              type: integer
+              min: 0
+            end:
+              type: integer
+              min: 0
+    
   TrackIdentification:
     title: TrackIdentification
     type: object
