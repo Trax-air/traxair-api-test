@@ -1,0 +1,317 @@
+# Example YAML to get you started quickly.
+# Be aware that YAML has indentation based scoping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadata
+info:
+  version: "0.1.0"
+  title: TraxAir Test API
+
+host: api.trax-air.com
+
+basePath: /v1
+
+consumes: 
+  - application/json
+
+produces: 
+  - application/json
+
+# Describe your paths here
+paths:
+  # This is a path endpoint. Change it.
+  /track:
+    # This is a HTTP operation
+    get:
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Gets the `Track` objects that you created.
+      operationId: getTrack
+      # This is array of GET operation parameters:
+      parameters:
+        - name: limit
+          in: query
+          description: maximum number of results to return
+          required: false
+          type: integer
+          format: int32
+        
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: ArrayOfTracks
+            type: array
+            items:
+              $ref: '#/definitions/track'
+    post:
+      description: Creates a new track.
+      operationId: addTrack
+      parameters:
+        - name: track
+          in: body
+          description: Track to add
+          required: true
+          schema:
+            $ref: '#/definitions/track'
+      responses:
+        '201':
+          description: Track creation was successful
+          schema:
+            $ref: '#/definitions/track'
+  /identify/tracklist/{identificationId}:
+    get:
+      description: Compute a tracklist from an URL.
+      operationId: getTracklist
+      parameters:
+        - name: identificationId
+          in: path
+          description: The id of the tracklist identification to retrieve
+          type: string
+      responses:
+        '200':
+          description: Successful
+          schema:
+            # Since we want to do reruns, maybe this should be an array
+            # and the tracklistIdentification should contain the date of identification
+            # In this case we should add a parameter to sort by date.
+            # Or, we could just show the last identification.
+            $ref: '#/definitions/tracklistIdentification'
+  /identify/tracklist/{identificationId}/rerun:
+    # We create a dedicated path for reruns since it contains a specific query payload.
+    # We could also POST directly on /identify/tracklist/{identificationId}/, but maybe we
+    # would like to perform more operations than a rerun in the future
+    post:
+      description: Rerun a track identification.
+      operationId: rerunTracklistIdentification
+      parameters:
+        - name: identificationId
+          in: path
+          description: The id of the track identification to retrieve
+          type: string
+        - name: rerunParams
+          in: body
+          description: Describes what parts of the file to rerun
+          required: true
+          schema:
+            $ref: '#/definitions/track'
+      responses:
+        '201':
+          description: Successful
+          schema:
+            $ref: '#/definitions/RerunParams'
+  /identify/tracklist/url:
+    post:
+      description: Identify a track from an URL.
+      operationId: identifyTracklistUrl
+      parameters:
+        - name: url
+          in: body
+          description: URL to analyze
+          required: true
+          schema:
+            $ref: '#/definitions/url'
+      responses:
+        '201':
+          description: Tracklist identification request creation was successful
+          schema:
+            $ref: '#/definitions/tracklistIdentification'
+  /identify/tracklist/file:
+    post:
+      description: Identify a tracklist from an uploaded file.
+      operationId: identifyTracklistFile
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: file
+          in: formData
+          description: File to upload and analyze
+          required: true
+          type: file
+      responses:
+        '201':
+          description: Tracklist identification request creation was successful
+          schema:
+            $ref: '#/definitions/tracklistIdentification'
+  /identify/track/{identificationId}:
+    get:
+      description: Compute a tracklist from an URL.
+      operationId: getTracklist
+      parameters:
+        - name: identificationId
+          in: path
+          description: The id of the track identification to retrieve
+          type: string
+      responses:
+        '200':
+          description: Successful
+          schema:
+            # Since we want to do reruns, maybe this should be an array
+            # and the trackIdentification should contain the date of identification.
+            # In this case we should add a parameter to sort by date.
+            # Or, we could just show the last identification.
+            $ref: '#/definitions/trackIdentification'
+  /identify/track/{identificationId}/rerun:
+    # We create a dedicated path for reruns so that this operation remains
+    # consistent with tracklist identification rerun. However here no payload
+    # is needed
+    post:
+      description: Rerun a track identification.
+      operationId: rerunTrackIdentification
+      parameters:
+        - name: identificationId
+          in: path
+          description: The id of the track identification to retrieve
+          type: string
+      responses:
+        '201':
+          description: Successful
+          schema:
+            $ref: '#/definitions/trackIdentification'
+  /identify/track/url:
+    post:
+      description: Compute a tracklist from an URL.
+      operationId: addTrack
+      parameters:
+        - name: url
+          in: body
+          description: URL to analyze
+          required: true
+          schema:
+            $ref: '#/definitions/url'
+      responses:
+        '201':
+          description: Track identification creation was successful
+          schema:
+            $ref: '#/definitions/track'
+  /identify/track/file:
+    post:
+      description: Identify a track from an uploaded file.
+      operationId: identifyTrackFile
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: file
+          in: formData
+          description: File to upload and analyze
+          required: true
+          type: file
+      responses:
+        '201':
+          description: Trackl identification request creation was successful
+          schema:
+            $ref: '#/definitions/trackIdentification'
+
+  /me/callbacks:
+    get:
+      description: Returns the callbacks that you set up.
+      operationId: myCallbacks
+      responses:
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/Callbacks'
+    put:
+      description: Update your callbacks
+      parameters:
+        - in: formData
+          name: callbackTrackIdentification
+          description: Update callbackTrackIdentification
+          type: string
+        - in: formData
+          name: callbackTracklistIdentification
+          description: Update callbackTracklistIdentification
+          required: true
+          type: string
+        - in: formData
+          name: callbackTrackTerritoryChange
+          description: Update callbackTrackTerritoryChange
+          required: true
+          type: string
+      responses:
+        '204':
+          description: Successfully updated
+        '405':
+          description: Invalid input
+
+definitions:
+  tracklistIdentification:
+    title: TracklistIdentification
+    type: object
+    properties:
+      id:
+        type: string
+        readOnly: true
+      tracklist:
+        $ref: '#/definitions/tracklist'
+  RerunParams:
+    title: RerunParams
+    type: array
+    items:
+      segment:
+        type: object
+        properties:
+          start:
+            type: int
+            min: 0
+          end:
+            type: int
+            min: 0
+  tracklist:
+    title: Tracklist
+    type: object
+    properties:
+      id:
+        type: string
+        readOnly: true
+  trackIdentification:
+    title: TracklistIdentification
+    type: object
+    properties:
+      id:
+        type: string
+        readOnly: true
+      tracklist:
+        $ref: '#/definitions/track'
+  track:
+    title: Track
+    type: object
+    properties:
+      id:
+        type: string
+        readOnly: true
+      ISRC:
+        type: string
+        readOnly: true
+      title:
+        type: string
+      artist:
+        $ref: '#/definitions/artist'
+  artist:
+    title: Artist
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+  url:
+    title: Url
+    type: object
+    properties:
+      url:
+        type: string
+  Callbacks:
+    title: Callbacks
+    type: object
+    properties:
+      callbackTrackIdentification:
+        type: string
+      callbackTracklistIdentification:
+        type: string
+      callbackTrackTerritoryChange:
+        type: string
