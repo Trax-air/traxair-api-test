@@ -172,7 +172,7 @@
         "/identify/tracklist/url": {
             "post": {
                 "description": "Identify a tracklist from an URL.",
-                "operationId": "identifyTracklistFromUrl",
+                "operationId": "tracklistIdentificationFromUrl",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -198,7 +198,7 @@
         "/identify/tracklist/file": {
             "post": {
                 "description": "Identify a tracklist from an uploaded file.",
-                "operationId": "identifyTracklistFromFile",
+                "operationId": "tracklistIdentificationFromFile",
                 "consumes": [
                     "multipart/form-data"
                 ],
@@ -298,7 +298,7 @@
         "/identify/track/url": {
             "post": {
                 "description": "Identify a track from an URL.",
-                "operationId": "identifyTrackFromUrl",
+                "operationId": "trackIdentificationFromUrl",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -324,7 +324,7 @@
         "/identify/track/file": {
             "post": {
                 "description": "Identify a track from an uploaded file.",
-                "operationId": "identifyTrackFromFile",
+                "operationId": "trackIdentificationFromFile",
                 "consumes": [
                     "multipart/form-data"
                 ],
