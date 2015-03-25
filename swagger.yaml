@@ -27,7 +27,7 @@ paths:
       # Describe this verb here. Note: you can use markdown
       description: |
         Gets the `Track` objects that you created.
-      operationId: getTracks
+      operationId: listTracks
       # This is array of GET operation parameters:
       parameters:
         - name: limit
@@ -85,7 +85,7 @@ paths:
   /identify/tracklist/{identificationId}:
     get:
       description: Compute a tracklist from an URL.
-      operationId: getTracklist
+      operationId: getTracklistIdentification
       parameters:
         - name: identificationId
           in: path
@@ -98,7 +98,7 @@ paths:
             $ref: '#/definitions/TracklistIdentification'
   /identify/tracklist/{identificationId}/rerun:
     post:
-      description: Rerun a track identification.
+      description: Rerun a tracklist identification.
       operationId: rerunTracklistIdentification
       parameters:
         - name: identificationId
@@ -119,7 +119,7 @@ paths:
   /identify/tracklist/{identificationId}/metadata:
     put:
       description: Modify the metadata for a tracklist identification
-      operationId: changeTracklistMetadata
+      operationId: changeTracklistIdentificationMetadata
       parameters:
         - name: identificationId
           in: path
@@ -138,7 +138,7 @@ paths:
   /identify/tracklist/url:
     post:
       description: Identify a tracklist from an URL.
-      operationId: identifyTracklistUrl
+      operationId: identifyTracklistFromUrl
       consumes:
         - application/x-www-form-urlencoded
       parameters:
@@ -155,7 +155,7 @@ paths:
   /identify/tracklist/file:
     post:
       description: Identify a tracklist from an uploaded file.
-      operationId: identifyTracklistFile
+      operationId: identifyTracklistFromFile
       consumes:
         - multipart/form-data
       parameters:
@@ -171,8 +171,8 @@ paths:
             $ref: '#/definitions/TracklistIdentification'
   /identify/track/{identificationId}:
     get:
-      description: Identify a tracklist from an URL.
-      operationId: getTracklist
+      description: Get a track identification.
+      operationId: getTrackIdentification
       parameters:
         - name: identificationId
           in: path
@@ -200,7 +200,7 @@ paths:
   /identify/track/{identificationId}/metadata:
     put:
       description: Modify the metadata for a track identification
-      operationId: changeTrackMetadata
+      operationId: changeTrackIdentificationMetadata
       parameters:
         - name: identificationId
           in: path
@@ -219,7 +219,7 @@ paths:
   /identify/track/url:
     post:
       description: Identify a track from an URL.
-      operationId: addTrack
+      operationId: identifyTrackFromUrl
       consumes:
         - application/x-www-form-urlencoded
       parameters:
@@ -236,7 +236,7 @@ paths:
   /identify/track/file:
     post:
       description: Identify a track from an uploaded file.
-      operationId: identifyTrackFile
+      operationId: identifyTrackFromFile
       consumes:
         - multipart/form-data
       parameters:
@@ -273,6 +273,8 @@ paths:
     put:
       description: Update your callbacks
       operationId: changeCallbacks
+      consumes:
+        - application/x-www-form-urlencoded
       parameters:
         - in: formData
           name: callbackTrackIdentification
@@ -291,7 +293,6 @@ paths:
           description: Successfully updated
         '405':
           description: Invalid input
-
 
 
 definitions:
