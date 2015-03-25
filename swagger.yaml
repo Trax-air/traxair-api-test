@@ -47,7 +47,7 @@ paths:
             title: ArrayOfTracks
             type: array
             items:
-              $ref: '#/definitions/track'
+              $ref: '#/definitions/Track'
     post:
       description: Creates a new track.
       operationId: addTrack
@@ -57,12 +57,12 @@ paths:
           description: Track to add
           required: true
           schema:
-            $ref: '#/definitions/track'
+            $ref: '#/definitions/Track'
       responses:
         '201':
           description: Track creation was successful
           schema:
-            $ref: '#/definitions/track'
+            $ref: '#/definitions/Track'
   /identify/tracklist/{identificationId}:
     get:
       description: Compute a tracklist from an URL.
@@ -80,7 +80,7 @@ paths:
             # and the tracklistIdentification should contain the date of identification
             # In this case we should add a parameter to sort by date.
             # Or, we could just show the last identification.
-            $ref: '#/definitions/tracklistIdentification'
+            $ref: '#/definitions/TracklistIdentification'
   /identify/tracklist/{identificationId}/rerun:
     # We create a dedicated path for reruns since it contains a specific query payload.
     # We could also POST directly on /identify/tracklist/{identificationId}/, but maybe we
@@ -98,7 +98,7 @@ paths:
           description: Describes what parts of the file to rerun
           required: true
           schema:
-            $ref: '#/definitions/track'
+            $ref: '#/definitions/Track'
       responses:
         '201':
           description: Successful
@@ -110,16 +110,15 @@ paths:
       operationId: identifyTracklistUrl
       parameters:
         - name: url
-          in: body
+          in: formData
           description: URL to analyze
           required: true
-          schema:
-            $ref: '#/definitions/url'
+          type: string
       responses:
         '201':
           description: Tracklist identification request creation was successful
           schema:
-            $ref: '#/definitions/tracklistIdentification'
+            $ref: '#/definitions/TracklistIdentification'
   /identify/tracklist/file:
     post:
       description: Identify a tracklist from an uploaded file.
@@ -136,7 +135,7 @@ paths:
         '201':
           description: Tracklist identification request creation was successful
           schema:
-            $ref: '#/definitions/tracklistIdentification'
+            $ref: '#/definitions/TracklistIdentification'
   /identify/track/{identificationId}:
     get:
       description: Compute a tracklist from an URL.
@@ -154,7 +153,7 @@ paths:
             # and the trackIdentification should contain the date of identification.
             # In this case we should add a parameter to sort by date.
             # Or, we could just show the last identification.
-            $ref: '#/definitions/trackIdentification'
+            $ref: '#/definitions/TrackIdentification'
   /identify/track/{identificationId}/rerun:
     # We create a dedicated path for reruns so that this operation remains
     # consistent with tracklist identification rerun. However here no payload
@@ -171,23 +170,22 @@ paths:
         '201':
           description: Successful
           schema:
-            $ref: '#/definitions/trackIdentification'
+            $ref: '#/definitions/TrackIdentification'
   /identify/track/url:
     post:
       description: Compute a tracklist from an URL.
       operationId: addTrack
       parameters:
         - name: url
-          in: body
+          in: formData
           description: URL to analyze
           required: true
-          schema:
-            $ref: '#/definitions/url'
+          type: string
       responses:
         '201':
           description: Track identification creation was successful
           schema:
-            $ref: '#/definitions/track'
+            $ref: '#/definitions/Track'
   /identify/track/file:
     post:
       description: Identify a track from an uploaded file.
@@ -204,7 +202,7 @@ paths:
         '201':
           description: Trackl identification request creation was successful
           schema:
-            $ref: '#/definitions/trackIdentification'
+            $ref: '#/definitions/TrackIdentification'
 
   /me/callbacks:
     get:
@@ -239,7 +237,7 @@ paths:
           description: Invalid input
 
 definitions:
-  tracklistIdentification:
+  TracklistIdentification:
     title: TracklistIdentification
     type: object
     properties:
@@ -247,7 +245,7 @@ definitions:
         type: string
         readOnly: true
       tracklist:
-        $ref: '#/definitions/tracklist'
+        $ref: '#/definitions/Tracklist'
   RerunParams:
     title: RerunParams
     type: array
@@ -261,14 +259,14 @@ definitions:
           end:
             type: int
             min: 0
-  tracklist:
+  Tracklist:
     title: Tracklist
     type: object
     properties:
       id:
         type: string
         readOnly: true
-  trackIdentification:
+  TrackIdentification:
     title: TracklistIdentification
     type: object
     properties:
@@ -276,8 +274,8 @@ definitions:
         type: string
         readOnly: true
       tracklist:
-        $ref: '#/definitions/track'
-  track:
+        $ref: '#/definitions/Track'
+  Track:
     title: Track
     type: object
     properties:
@@ -290,20 +288,14 @@ definitions:
       title:
         type: string
       artist:
-        $ref: '#/definitions/artist'
-  artist:
+        $ref: '#/definitions/Artist'
+  Artist:
     title: Artist
     type: object
     properties:
       id:
         type: string
       name:
-        type: string
-  url:
-    title: Url
-    type: object
-    properties:
-      url:
         type: string
   Callbacks:
     title: Callbacks

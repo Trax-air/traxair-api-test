@@ -34,7 +34,7 @@
                             "title": "ArrayOfTracks",
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/track"
+                                "$ref": "#/definitions/Track"
                             }
                         }
                     }
@@ -50,7 +50,7 @@
                         "description": "Track to add",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/track"
+                            "$ref": "#/definitions/Track"
                         }
                     }
                 ],
@@ -58,7 +58,7 @@
                     "201": {
                         "description": "Track creation was successful",
                         "schema": {
-                            "$ref": "#/definitions/track"
+                            "$ref": "#/definitions/Track"
                         }
                     }
                 }
@@ -80,7 +80,7 @@
                     "200": {
                         "description": "Successful",
                         "schema": {
-                            "$ref": "#/definitions/tracklistIdentification"
+                            "$ref": "#/definitions/TracklistIdentification"
                         }
                     }
                 }
@@ -103,7 +103,7 @@
                         "description": "Describes what parts of the file to rerun",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/track"
+                            "$ref": "#/definitions/Track"
                         }
                     }
                 ],
@@ -124,19 +124,17 @@
                 "parameters": [
                     {
                         "name": "url",
-                        "in": "body",
+                        "in": "formData",
                         "description": "URL to analyze",
                         "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/url"
-                        }
+                        "type": "string"
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Tracklist identification request creation was successful",
                         "schema": {
-                            "$ref": "#/definitions/tracklistIdentification"
+                            "$ref": "#/definitions/TracklistIdentification"
                         }
                     }
                 }
@@ -162,7 +160,7 @@
                     "201": {
                         "description": "Tracklist identification request creation was successful",
                         "schema": {
-                            "$ref": "#/definitions/tracklistIdentification"
+                            "$ref": "#/definitions/TracklistIdentification"
                         }
                     }
                 }
@@ -184,7 +182,7 @@
                     "200": {
                         "description": "Successful",
                         "schema": {
-                            "$ref": "#/definitions/trackIdentification"
+                            "$ref": "#/definitions/TrackIdentification"
                         }
                     }
                 }
@@ -206,7 +204,7 @@
                     "201": {
                         "description": "Successful",
                         "schema": {
-                            "$ref": "#/definitions/trackIdentification"
+                            "$ref": "#/definitions/TrackIdentification"
                         }
                     }
                 }
@@ -219,19 +217,17 @@
                 "parameters": [
                     {
                         "name": "url",
-                        "in": "body",
+                        "in": "formData",
                         "description": "URL to analyze",
                         "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/url"
-                        }
+                        "type": "string"
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Track identification creation was successful",
                         "schema": {
-                            "$ref": "#/definitions/track"
+                            "$ref": "#/definitions/Track"
                         }
                     }
                 }
@@ -257,7 +253,7 @@
                     "201": {
                         "description": "Trackl identification request creation was successful",
                         "schema": {
-                            "$ref": "#/definitions/trackIdentification"
+                            "$ref": "#/definitions/TrackIdentification"
                         }
                     }
                 }
@@ -312,7 +308,7 @@
         }
     },
     "definitions": {
-        "tracklistIdentification": {
+        "TracklistIdentification": {
             "title": "TracklistIdentification",
             "type": "object",
             "properties": {
@@ -321,7 +317,7 @@
                     "readOnly": true
                 },
                 "tracklist": {
-                    "$ref": "#/definitions/tracklist"
+                    "$ref": "#/definitions/Tracklist"
                 }
             }
         },
@@ -344,7 +340,7 @@
                 }
             }
         },
-        "tracklist": {
+        "Tracklist": {
             "title": "Tracklist",
             "type": "object",
             "properties": {
@@ -354,7 +350,7 @@
                 }
             }
         },
-        "trackIdentification": {
+        "TrackIdentification": {
             "title": "TracklistIdentification",
             "type": "object",
             "properties": {
@@ -363,11 +359,11 @@
                     "readOnly": true
                 },
                 "tracklist": {
-                    "$ref": "#/definitions/track"
+                    "$ref": "#/definitions/Track"
                 }
             }
         },
-        "track": {
+        "Track": {
             "title": "Track",
             "type": "object",
             "properties": {
@@ -383,11 +379,11 @@
                     "type": "string"
                 },
                 "artist": {
-                    "$ref": "#/definitions/artist"
+                    "$ref": "#/definitions/Artist"
                 }
             }
         },
-        "artist": {
+        "Artist": {
             "title": "Artist",
             "type": "object",
             "properties": {
@@ -395,15 +391,6 @@
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "url": {
-            "title": "Url",
-            "type": "object",
-            "properties": {
-                "url": {
                     "type": "string"
                 }
             }
