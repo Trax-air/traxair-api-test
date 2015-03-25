@@ -171,8 +171,11 @@
         },
         "/identify/tracklist/url": {
             "post": {
-                "description": "Identify a track from an URL.",
+                "description": "Identify a tracklist from an URL.",
                 "operationId": "identifyTracklistUrl",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
                 "parameters": [
                     {
                         "name": "url",
@@ -296,6 +299,9 @@
             "post": {
                 "description": "Identify a track from an URL.",
                 "operationId": "addTrack",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
                 "parameters": [
                     {
                         "name": "url",
