@@ -16,12 +16,8 @@ paths:
       summary: "Retrieve all `Track` objects.\n"
       operationId: listTracks
       parameters:
-        - name: limit
-          in: query
-          description: maximum number of results to return
-          required: false
-          type: integer
-          format: int32
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/Offset"
       responses:
         "200":
           description: Successful response
@@ -96,6 +92,7 @@ paths:
       parameters:
         - name: identificationId
           in: path
+          required: true
           description: The id of the tracklist identification
           type: string
       responses:
@@ -112,6 +109,7 @@ paths:
       parameters:
         - name: identificationId
           in: path
+          required: true
           description: The id of the tracklist identification
           type: string
       responses:
@@ -128,6 +126,7 @@ paths:
       parameters:
         - name: identificationId
           in: path
+          required: true
           description: The id of the tracklist identification
           type: string
         - name: body
@@ -150,10 +149,12 @@ paths:
       parameters:
         - name: identificationId
           in: path
+          required: true
           description: The id of the tracklist identification
           type: string
         - name: runNumber
           in: path
+          required: true
           description: The number of the tracklist identification run to retrieve
           type: string
       responses:
@@ -192,6 +193,7 @@ paths:
       parameters:
         - name: identificationId
           in: path
+          required: true
           description: The id of the track identification
           type: string
       responses:
@@ -208,6 +210,7 @@ paths:
       parameters:
         - name: identificationId
           in: path
+          required: true
           description: The id of the track identification
           type: string
       responses:
@@ -224,6 +227,7 @@ paths:
       parameters:
         - name: identificationId
           in: path
+          required: true
           description: The id of the track identification
           type: string
         - name: body
@@ -246,10 +250,12 @@ paths:
       parameters:
         - name: identificationId
           in: path
+          required: true
           description: The id of the track identification
           type: string
         - name: runNumber
           in: path
+          required: true
           description: The number of the track identification run to retrieve
           type: string
       responses:
@@ -504,3 +510,24 @@ definitions:
         type: integer
       price:
         type: number
+
+parameters:
+  Limit: 
+    name: limit
+    in: query
+    description: maximum number of results to return
+    required: false
+    type: integer
+    format: int32
+    maximum: 1000
+    minimum: 10
+    default: 10
+  Offset: 
+    name: offset
+    in: query
+    description: offset on the results to return
+    required: false
+    type: integer
+    format: int32
+    minimum: 0
+    default: 0
