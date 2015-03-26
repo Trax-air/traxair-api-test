@@ -15,7 +15,10 @@
     "paths": {
         "/track": {
             "get": {
-                "description": "Gets the `Track` objects that you created.\n",
+                "tags": [
+                    "track"
+                ],
+                "description": "Retrieve all `Track` objects.\n",
                 "operationId": "listTracks",
                 "parameters": [
                     {
@@ -41,7 +44,10 @@
                 }
             },
             "post": {
-                "description": "Creates a new track.",
+                "tags": [
+                    "track"
+                ],
+                "description": "Creates a new `Track` object.",
                 "operationId": "addTrack",
                 "parameters": [
                     {
@@ -66,14 +72,19 @@
         },
         "/track/{trackId}": {
             "get": {
-                "description": "Gets the `Track` objects that you created.\n",
+                "tags": [
+                    "track"
+                ],
+                "description": "Retrieve a `Track` object.\n",
                 "operationId": "getTrack",
                 "parameters": [
                     {
                         "name": "trackId",
                         "in": "path",
-                        "description": "The id of the track identification to retrieve",
-                        "type": "string"
+                        "description": "the identifier of the track",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
                     }
                 ],
                 "responses": {
@@ -86,15 +97,51 @@
                 }
             }
         },
+        "/identify/tracklist": {
+            "post": {
+                "tags": [
+                    "tracklist",
+                    "identification"
+                ],
+                "description": "Creates a `TracklistIdentification` object. Also creates a `TracklistIdentificationRun` numbered 0.",
+                "operationId": "tracklistIdentification",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name": "file",
+                        "in": "formData",
+                        "description": "File to upload and analyze",
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Tracklist identification creation was successful",
+                        "schema": {
+                            "$ref": "#/definitions/TrackIdentification"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input. You have to either set a file or an url, but not both or neither one."
+                    }
+                }
+            }
+        },
         "/identify/tracklist/{identificationId}": {
             "get": {
-                "description": "Compute a tracklist from an URL.",
+                "tags": [
+                    "tracklist",
+                    "identification"
+                ],
+                "description": "Retrieve a `TracklistIdentification` object.",
                 "operationId": "getTracklistIdentification",
                 "parameters": [
                     {
                         "name": "identificationId",
                         "in": "path",
-                        "description": "The id of the tracklist identification to retrieve",
+                        "description": "The id of the tracklist identification",
                         "type": "string"
                     }
                 ],
@@ -106,43 +153,38 @@
                         }
                     }
                 }
-            }
-        },
-        "/identify/tracklist/{identificationId}/rerun": {
+            },
             "post": {
-                "description": "Rerun a tracklist identification.",
-                "operationId": "rerunTracklistIdentification",
+                "tags": [
+                    "tracklist",
+                    "identification"
+                ],
+                "description": "Creates a `TracklistIdentificationRun` object. This reruns the identification of the provided file or url.",
+                "operationId": "rerunTrackIdentification",
                 "parameters": [
                     {
                         "name": "identificationId",
                         "in": "path",
-                        "description": "The id of the track identification to retrieve",
+                        "description": "The id of the tracklist identification",
                         "type": "string"
-                    },
-                    {
-                        "name": "rerunParams",
-                        "in": "body",
-                        "description": "Describes what parts of the file to rerun",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/RerunParams"
-                        }
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Successful",
                         "schema": {
-                            "$ref": "#/definitions/RerunParams"
+                            "$ref": "#/definitions/TracklistIdentificationRun"
                         }
                     }
                 }
-            }
-        },
-        "/identify/tracklist/{identificationId}/metadata": {
+            },
             "put": {
-                "description": "Modify the metadata for a tracklist identification",
-                "operationId": "changeTracklistIdentificationMetadata",
+                "tags": [
+                    "tracklist",
+                    "identification"
+                ],
+                "description": "Modify the content of a `TracklistIdentification` object.",
+                "operationId": "changeTracklistIdentification",
                 "parameters": [
                     {
                         "name": "identificationId",
@@ -151,11 +193,11 @@
                         "type": "string"
                     },
                     {
-                        "name": "metadata",
+                        "name": "body",
                         "in": "body",
-                        "description": "The metadata to change",
+                        "description": "The content to change. Can cover only parts of an object.",
                         "schema": {
-                            "$ref": "#/definitions/MetadataIdentification"
+                            "$ref": "#/definitions/TracklistIdentification"
                         }
                     }
                 ],
@@ -169,36 +211,46 @@
                 }
             }
         },
-        "/identify/tracklist/url": {
-            "post": {
-                "description": "Identify a tracklist from an URL.",
-                "operationId": "tracklistIdentificationFromUrl",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
+        "/identify/tracklist/{identificationId}/{runNumber}": {
+            "get": {
+                "tags": [
+                    "tracklist",
+                    "identification"
                 ],
+                "description": "Retrieve a `TracklistIdentificationRun` object.",
+                "operationId": "getTracklistIdentification",
                 "parameters": [
                     {
-                        "name": "url",
-                        "in": "formData",
-                        "description": "URL to analyze",
-                        "required": true,
+                        "name": "identificationId",
+                        "in": "path",
+                        "description": "The id of the tracklist identification",
+                        "type": "string"
+                    },
+                    {
+                        "name": "runNumber",
+                        "in": "path",
+                        "description": "The number of the tracklist identification run to retrieve",
                         "type": "string"
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Tracklist identification request creation was successful",
+                    "200": {
+                        "description": "Successful",
                         "schema": {
-                            "$ref": "#/definitions/TracklistIdentification"
+                            "$ref": "#/definitions/TracklistIdentificationRun"
                         }
                     }
                 }
             }
         },
-        "/identify/tracklist/file": {
+        "/identify/track": {
             "post": {
-                "description": "Identify a tracklist from an uploaded file.",
-                "operationId": "tracklistIdentificationFromFile",
+                "tags": [
+                    "track",
+                    "identification"
+                ],
+                "description": "Identify a track from an URL or from an uploaded file.",
+                "operationId": "trackIdentification",
                 "consumes": [
                     "multipart/form-data"
                 ],
@@ -207,29 +259,35 @@
                         "name": "file",
                         "in": "formData",
                         "description": "File to upload and analyze",
-                        "required": true,
                         "type": "file"
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "Tracklist identification request creation was successful",
+                        "description": "Track identification creation was successful",
                         "schema": {
-                            "$ref": "#/definitions/TracklistIdentification"
+                            "$ref": "#/definitions/TrackIdentification"
                         }
+                    },
+                    "400": {
+                        "description": "Invalid input. You have to either set a file or an url, but not both or neither one."
                     }
                 }
             }
         },
         "/identify/track/{identificationId}": {
             "get": {
+                "tags": [
+                    "track",
+                    "identification"
+                ],
                 "description": "Get a track identification.",
                 "operationId": "getTrackIdentification",
                 "parameters": [
                     {
                         "name": "identificationId",
                         "in": "path",
-                        "description": "The id of the track identification to retrieve",
+                        "description": "The id of the track identification",
                         "type": "string"
                     }
                 ],
@@ -241,17 +299,19 @@
                         }
                     }
                 }
-            }
-        },
-        "/identify/track/{identificationId}/rerun": {
+            },
             "post": {
-                "description": "Rerun a track identification.",
+                "tags": [
+                    "track",
+                    "identification"
+                ],
+                "description": "Creates another run for a track identification.",
                 "operationId": "rerunTrackIdentification",
                 "parameters": [
                     {
                         "name": "identificationId",
                         "in": "path",
-                        "description": "The id of the track identification to retrieve",
+                        "description": "The id of the track identification",
                         "type": "string"
                     }
                 ],
@@ -259,16 +319,18 @@
                     "201": {
                         "description": "Successful",
                         "schema": {
-                            "$ref": "#/definitions/TrackIdentification"
+                            "$ref": "#/definitions/TrackIdentificationRun"
                         }
                     }
                 }
-            }
-        },
-        "/identify/track/{identificationId}/metadata": {
+            },
             "put": {
-                "description": "Modify the metadata for a track identification",
-                "operationId": "changeTrackIdentificationMetadata",
+                "tags": [
+                    "track",
+                    "identification"
+                ],
+                "description": "Modify the content of a track identification",
+                "operationId": "changeTrackIdentification",
                 "parameters": [
                     {
                         "name": "identificationId",
@@ -277,11 +339,11 @@
                         "type": "string"
                     },
                     {
-                        "name": "metadata",
+                        "name": "body",
                         "in": "body",
-                        "description": "The metadata to change",
+                        "description": "The content to change. Can cover only parts of an object.",
                         "schema": {
-                            "$ref": "#/definitions/MetadataIdentification"
+                            "$ref": "#/definitions/TrackIdentification"
                         }
                     }
                 ],
@@ -289,59 +351,39 @@
                     "204": {
                         "description": "Successfully updated"
                     },
-                    "405": {
+                    "400": {
                         "description": "Invalid input"
                     }
                 }
             }
         },
-        "/identify/track/url": {
-            "post": {
-                "description": "Identify a track from an URL.",
-                "operationId": "trackIdentificationFromUrl",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
+        "/identify/track/{identificationId}/{runNumber}": {
+            "get": {
+                "tags": [
+                    "track",
+                    "identification"
                 ],
+                "description": "Retrieve a `TrackIdentificationRun` object.",
+                "operationId": "getTrackIdentification",
                 "parameters": [
                     {
-                        "name": "url",
-                        "in": "formData",
-                        "description": "URL to analyze",
-                        "required": true,
+                        "name": "identificationId",
+                        "in": "path",
+                        "description": "The id of the track identification",
+                        "type": "string"
+                    },
+                    {
+                        "name": "runNumber",
+                        "in": "path",
+                        "description": "The number of the track identification run to retrieve",
                         "type": "string"
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Track identification creation was successful",
+                    "200": {
+                        "description": "Successful",
                         "schema": {
-                            "$ref": "#/definitions/Track"
-                        }
-                    }
-                }
-            }
-        },
-        "/identify/track/file": {
-            "post": {
-                "description": "Identify a track from an uploaded file.",
-                "operationId": "trackIdentificationFromFile",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "parameters": [
-                    {
-                        "name": "file",
-                        "in": "formData",
-                        "description": "File to upload and analyze",
-                        "required": true,
-                        "type": "file"
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Trackl identification request creation was successful",
-                        "schema": {
-                            "$ref": "#/definitions/TrackIdentification"
+                            "$ref": "#/definitions/TrackIdentificationRun"
                         }
                     }
                 }
@@ -349,7 +391,10 @@
         },
         "/me/billing": {
             "get": {
-                "description": "Returns the current and past billing information.",
+                "tags": [
+                    "me"
+                ],
+                "description": "Retrieve the current and past billing information.",
                 "operationId": "myBills",
                 "responses": {
                     "200": {
@@ -366,7 +411,10 @@
         },
         "/me/callbacks": {
             "get": {
-                "description": "Returns the callbacks that you set up to be notified of changes in tracklist or track identification, or track territory.",
+                "tags": [
+                    "me"
+                ],
+                "description": "Retrieve the callbacks that you set up to be notified of changes in tracklist or track identification, or track territory.",
                 "operationId": "myCallbacks",
                 "responses": {
                     "200": {
@@ -378,10 +426,13 @@
                 }
             },
             "put": {
+                "tags": [
+                    "me"
+                ],
                 "description": "Update your callbacks",
                 "operationId": "changeCallbacks",
                 "consumes": [
-                    "application/x-www-form-urlencoded"
+                    "multipart/form-data"
                 ],
                 "parameters": [
                     {
@@ -464,28 +515,48 @@
                 "metadata": {
                     "$ref": "#/definitions/MetadataIdentification"
                 },
+                "url": {
+                    "type": "string",
+                    "format": "url",
+                    "readOnly": true
+                },
+                "filename": {
+                    "type": "string",
+                    "readOnly": true
+                },
                 "identifications": {
                     "type": "array",
                     "items": {
-                        "type": "object",
-                        "properties": {
-                            "date": {
-                                "type": "string",
-                                "format": "date-time"
-                            },
-                            "done": {
-                                "type": "boolean"
-                            },
-                            "tracklist": {
-                                "$ref": "#/definitions/Tracklist"
-                            }
-                        }
+                        "$ref": "#/definitions/TracklistIdentificationRun"
                     }
                 }
             }
         },
-        "RerunParams": {
-            "title": "RerunParams",
+        "TracklistIdentificationRun": {
+            "title": "TracklistIdentificationRun",
+            "type": "object",
+            "properties": {
+                "number": {
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "params": {
+                    "$ref": "#/definitions/RunParams"
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "done": {
+                    "type": "boolean"
+                },
+                "track": {
+                    "$ref": "#/definitions/Tracklist"
+                }
+            }
+        },
+        "RunParams": {
+            "title": "RunParams",
             "type": "array",
             "items": {
                 "type": "object",
@@ -523,7 +594,7 @@
                             },
                             "end": {
                                 "type": "integer",
-                                "min": 0
+                                "min": null
                             }
                         }
                     }
@@ -541,11 +612,37 @@
                 "metadata": {
                     "$ref": "#/definitions/MetadataIdentification"
                 },
-                "identifications": {
+                "url": {
+                    "type": "string",
+                    "format": "url",
+                    "readOnly": true
+                },
+                "filename": {
+                    "type": "string",
+                    "readOnly": true
+                },
+                "runs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/Track"
+                        "$ref": "#/definitions/TrackIdentificationRun"
                     }
+                }
+            }
+        },
+        "TrackIdentificationRun": {
+            "title": "TrackIdentificationRun",
+            "type": "object",
+            "properties": {
+                "number": {
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "track": {
+                    "$ref": "#/definitions/Track"
                 }
             }
         },
