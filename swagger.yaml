@@ -375,10 +375,10 @@ definitions:
       properties:
         start:
           type: integer
-          min: 0
+          minimum: 0
         end:
           type: integer
-          min: 0
+          minimum: 0
   Tracklist:
     title: Tracklist
     type: object
@@ -395,10 +395,10 @@ definitions:
               $ref: "#/definitions/Track"
             start:
               type: integer
-              min: 0
+              minimum: 0
             end:
               type: integer
-              min: null
+              minimum: 0
   TrackIdentification:
     title: TrackIdentification
     type: object

@@ -561,11 +561,11 @@
                 "properties": {
                     "start": {
                         "type": "integer",
-                        "min": 0
+                        "minimum": 0
                     },
                     "end": {
                         "type": "integer",
-                        "min": 0
+                        "minimum": 0
                     }
                 }
             }
@@ -588,11 +588,11 @@
                             },
                             "start": {
                                 "type": "integer",
-                                "min": 0
+                                "minimum": 0
                             },
                             "end": {
                                 "type": "integer",
-                                "min": null
+                                "minimum": 0
                             }
                         }
                     }
