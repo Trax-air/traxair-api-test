@@ -1,36 +1,20 @@
-# Example YAML to get you started quickly.
-# Be aware that YAML has indentation based scoping.
-# Code completion support is available so start typing for available options.
-swagger: '2.0'
-
-# This is your document metadata
+swagger: "2.0"
 info:
-  version: "0.1.0"
+  version: 0.1.0
   title: TraxAir Test API
-
 host: api.trax-air.com
-
 basePath: /v1
-
-consumes: 
+consumes:
   - application/json
-
-produces: 
+produces:
   - application/json
-
-# Describe your paths here
 paths:
-  # This is a path endpoint. Change it.
   /track:
-    # This is a HTTP operation
     get:
       tags:
         - track
-      # Describe this verb here. Note: you can use markdown
-      description: |
-        Retrieve all `Track` objects.
+      summary: "Retrieve all `Track` objects.\n"
       operationId: listTracks
-      # This is array of GET operation parameters:
       parameters:
         - name: limit
           in: query
@@ -38,22 +22,18 @@ paths:
           required: false
           type: integer
           format: int32
-        
       responses:
-        # Response code
-        200:
+        "200":
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: ArrayOfTracks
             type: array
             items:
-              $ref: '#/definitions/Track'
+              $ref: "#/definitions/Track"
     post:
       tags:
         - track
-      description: Creates a new `Track` object.
+      summary: "Creates a new `Track` object."
       operationId: addTrack
       parameters:
         - name: track
@@ -61,18 +41,17 @@ paths:
           description: Track to add
           required: true
           schema:
-            $ref: '#/definitions/Track'
+            $ref: "#/definitions/Track"
       responses:
-        '201':
+        "201":
           description: Track creation was successful
           schema:
-            $ref: '#/definitions/Track'
-  /track/{trackId}:
+            $ref: "#/definitions/Track"
+  "/track/{trackId}":
     get:
       tags:
         - track
-      description: |
-        Retrieve a `Track` object.
+      summary: "Retrieve a `Track` object.\n"
       operationId: getTrack
       parameters:
         - name: trackId
@@ -82,42 +61,37 @@ paths:
           type: integer
           format: int32
       responses:
-        '200':
+        "200":
           description: Successful response
           schema:
-            $ref: '#/definitions/Track'
+            $ref: "#/definitions/Track"
   /identify/tracklist:
     post:
       tags:
         - tracklist
         - identification
-      description: Creates a `TracklistIdentification` object. Also creates a `TracklistIdentificationRun` numbered 0.
+      summary: "Creates a `TracklistIdentification` object. Also creates a `TracklistIdentificationRun` numbered 0."
       operationId: tracklistIdentification
       consumes:
         - multipart/form-data
-      parameters:
-        - name: url
-          in: formData
-          description: URL to analyze
-          type: string
       parameters:
         - name: file
           in: formData
           description: File to upload and analyze
           type: file
       responses:
-        '201':
+        "201":
           description: Tracklist identification creation was successful
           schema:
-            $ref: '#/definitions/TrackIdentification'
-        '400':
-          description: Invalid input. You have to either set a file or an url, but not both or neither one.    
-  /identify/tracklist/{identificationId}:
+            $ref: "#/definitions/TrackIdentification"
+        "400":
+          description: "Invalid input. You have to either set a file or an url, but not both or neither one."
+  "/identify/tracklist/{identificationId}":
     get:
       tags:
         - tracklist
         - identification
-      description: Retrieve a `TracklistIdentification` object.
+      summary: "Retrieve a `TracklistIdentification` object."
       operationId: getTracklistIdentification
       parameters:
         - name: identificationId
@@ -125,15 +99,15 @@ paths:
           description: The id of the tracklist identification
           type: string
       responses:
-        '200':
+        "200":
           description: Successful
           schema:
-            $ref: '#/definitions/TracklistIdentification'
+            $ref: "#/definitions/TracklistIdentification"
     post:
       tags:
         - tracklist
         - identification
-      description: Creates a `TracklistIdentificationRun` object. This reruns the identification of the provided file or url.
+      summary: "Creates a `TracklistIdentificationRun` object. This reruns the identification of the provided file or url."
       operationId: rerunTrackIdentification
       parameters:
         - name: identificationId
@@ -141,15 +115,15 @@ paths:
           description: The id of the tracklist identification
           type: string
       responses:
-        '201':
+        "201":
           description: Successful
           schema:
-            $ref: '#/definitions/TracklistIdentificationRun'
+            $ref: "#/definitions/TracklistIdentificationRun"
     put:
       tags:
         - tracklist
         - identification
-      description: Modify the content of a `TracklistIdentification` object.
+      summary: "Modify the content of a `TracklistIdentification` object."
       operationId: changeTracklistIdentification
       parameters:
         - name: identificationId
@@ -160,18 +134,18 @@ paths:
           in: body
           description: The content to change. Can cover only parts of an object.
           schema:
-            $ref: '#/definitions/TracklistIdentification'
+            $ref: "#/definitions/TracklistIdentification"
       responses:
-        '204':
+        "204":
           description: Successfully updated
-        '405':
+        "405":
           description: Invalid input
-  /identify/tracklist/{identificationId}/{runNumber}:
+  "/identify/tracklist/{identificationId}/{runNumber}":
     get:
       tags:
         - tracklist
         - identification
-      description: Retrieve a `TracklistIdentificationRun` object.
+      summary: "Retrieve a `TracklistIdentificationRun` object."
       operationId: getTracklistIdentification
       parameters:
         - name: identificationId
@@ -183,42 +157,37 @@ paths:
           description: The number of the tracklist identification run to retrieve
           type: string
       responses:
-        '200':
+        "200":
           description: Successful
           schema:
-            $ref: '#/definitions/TracklistIdentificationRun'
+            $ref: "#/definitions/TracklistIdentificationRun"
   /identify/track:
     post:
       tags:
         - track
         - identification
-      description: Identify a track from an URL or from an uploaded file.
+      summary: Identify a track from an URL or from an uploaded file.
       operationId: trackIdentification
       consumes:
         - multipart/form-data
-      parameters:
-        - name: url
-          in: formData
-          description: URL to analyze
-          type: string
       parameters:
         - name: file
           in: formData
           description: File to upload and analyze
           type: file
       responses:
-        '201':
+        "201":
           description: Track identification creation was successful
           schema:
-            $ref: '#/definitions/TrackIdentification'
-        '400':
-          description: Invalid input. You have to either set a file or an url, but not both or neither one.
-  /identify/track/{identificationId}:
+            $ref: "#/definitions/TrackIdentification"
+        "400":
+          description: "Invalid input. You have to either set a file or an url, but not both or neither one."
+  "/identify/track/{identificationId}":
     get:
       tags:
         - track
         - identification
-      description: Get a track identification.
+      summary: Get a track identification.
       operationId: getTrackIdentification
       parameters:
         - name: identificationId
@@ -226,15 +195,15 @@ paths:
           description: The id of the track identification
           type: string
       responses:
-        '200':
+        "200":
           description: Successful
           schema:
-            $ref: '#/definitions/TrackIdentification'
+            $ref: "#/definitions/TrackIdentification"
     post:
       tags:
         - track
         - identification
-      description: Creates another run for a track identification.
+      summary: Creates another run for a track identification.
       operationId: rerunTrackIdentification
       parameters:
         - name: identificationId
@@ -242,15 +211,15 @@ paths:
           description: The id of the track identification
           type: string
       responses:
-        '201':
+        "201":
           description: Successful
           schema:
-            $ref: '#/definitions/TrackIdentificationRun'
+            $ref: "#/definitions/TrackIdentificationRun"
     put:
       tags:
         - track
         - identification
-      description: Modify the content of a track identification
+      summary: Modify the content of a track identification
       operationId: changeTrackIdentification
       parameters:
         - name: identificationId
@@ -261,18 +230,18 @@ paths:
           in: body
           description: The content to change. Can cover only parts of an object.
           schema:
-            $ref: '#/definitions/TrackIdentification'
+            $ref: "#/definitions/TrackIdentification"
       responses:
-        '204':
+        "204":
           description: Successfully updated
-        '400':
+        "400":
           description: Invalid input
-  /identify/track/{identificationId}/{runNumber}:
+  "/identify/track/{identificationId}/{runNumber}":
     get:
       tags:
         - track
         - identification
-      description: Retrieve a `TrackIdentificationRun` object.
+      summary: "Retrieve a `TrackIdentificationRun` object."
       operationId: getTrackIdentification
       parameters:
         - name: identificationId
@@ -284,38 +253,38 @@ paths:
           description: The number of the track identification run to retrieve
           type: string
       responses:
-        '200':
+        "200":
           description: Successful
           schema:
-            $ref: '#/definitions/TrackIdentificationRun'
+            $ref: "#/definitions/TrackIdentificationRun"
   /me/billing:
     get:
       tags:
         - me
-      description: Retrieve the current and past billing information.
+      summary: Retrieve the current and past billing information.
       operationId: myBills
       responses:
-        '200':
+        "200":
           description: Successful
           schema:
             type: array
             items:
-              $ref: '#/definitions/Bills'
+              $ref: "#/definitions/Bills"
   /me/callbacks:
     get:
       tags:
         - me
-      description: Retrieve the callbacks that you set up to be notified of changes in tracklist or track identification, or track territory.
+      summary: "Retrieve the callbacks that you set up to be notified of changes in tracklist or track identification, or track territory."
       operationId: myCallbacks
       responses:
-        '200':
+        "200":
           description: Successful
           schema:
-            $ref: '#/definitions/Callbacks'
+            $ref: "#/definitions/Callbacks"
     put:
       tags:
         - me
-      description: Update your callbacks
+      summary: Update your callbacks
       operationId: changeCallbacks
       consumes:
         - multipart/form-data
@@ -333,12 +302,10 @@ paths:
           description: Update callbackTrackTerritoryChange
           type: string
       responses:
-        '204':
+        "204":
           description: Successfully updated
-        '405':
+        "405":
           description: Invalid input
-
-
 definitions:
   MetadataIdentification:
     title: MetadataIdentification
@@ -346,7 +313,6 @@ definitions:
     properties:
       sourceUrl:
         type: string
-        format: url
       curator:
         type: string
       territoryCode:
@@ -357,7 +323,6 @@ definitions:
         type: string
       genre:
         type: string
-      # radio stream, live, podcast
       type:
         type: string
       source:
@@ -375,10 +340,9 @@ definitions:
         type: string
         readOnly: true
       metadata:
-        $ref: '#/definitions/MetadataIdentification'
+        $ref: "#/definitions/MetadataIdentification"
       url:
         type: string
-        format: url
         readOnly: true
       filename:
         type: string
@@ -386,7 +350,7 @@ definitions:
       identifications:
         type: array
         items:
-          $ref: '#/definitions/TracklistIdentificationRun'
+          $ref: "#/definitions/TracklistIdentificationRun"
   TracklistIdentificationRun:
     title: TracklistIdentificationRun
     type: object
@@ -395,14 +359,14 @@ definitions:
         type: integer
         readOnly: true
       params:
-        $ref: '#/definitions/RunParams'
+        $ref: "#/definitions/RunParams"
       date:
         type: string
         format: date
       done:
         type: boolean
       track:
-        $ref: '#/definitions/Tracklist'
+        $ref: "#/definitions/Tracklist"
   RunParams:
     title: RunParams
     type: array
@@ -428,13 +392,13 @@ definitions:
           type: object
           properties:
             track:
-              $ref: '#/definitions/Track'
+              $ref: "#/definitions/Track"
             start:
               type: integer
               min: 0
             end:
               type: integer
-              min: 
+              min: null
   TrackIdentification:
     title: TrackIdentification
     type: object
@@ -443,10 +407,9 @@ definitions:
         type: string
         readOnly: true
       metadata:
-        $ref: '#/definitions/MetadataIdentification'
+        $ref: "#/definitions/MetadataIdentification"
       url:
         type: string
-        format: url
         readOnly: true
       filename:
         type: string
@@ -454,7 +417,7 @@ definitions:
       runs:
         type: array
         items:
-          $ref: '#/definitions/TrackIdentificationRun'
+          $ref: "#/definitions/TrackIdentificationRun"
   TrackIdentificationRun:
     title: TrackIdentificationRun
     type: object
@@ -466,7 +429,7 @@ definitions:
         type: string
         format: date
       track:
-        $ref: '#/definitions/Track'
+        $ref: "#/definitions/Track"
   Track:
     title: Track
     type: object
@@ -484,9 +447,9 @@ definitions:
       artists:
         type: array
         items:
-          $ref: '#/definitions/Artist'
+          $ref: "#/definitions/Artist"
       release:
-        $ref: '#/definitions/Release'
+        $ref: "#/definitions/Release"
       UPC:
         type: string
       duration:
@@ -505,7 +468,6 @@ definitions:
       name:
         type: string
       role:
-        # Main or remixer
         type: string
   Release:
     title: Release
@@ -521,20 +483,16 @@ definitions:
         type: string
       cover:
         type: string
-        format: url
   Callbacks:
     title: Callbacks
     type: object
     properties:
       callbackTrackIdentification:
         type: string
-        format: url
       callbackTracklistIdentification:
         type: string
-        format: url
       callbackTrackTerritoryChange:
         type: string
-        format: url
   Bills:
     title: Bills
     type: object

@@ -18,7 +18,7 @@
                 "tags": [
                     "track"
                 ],
-                "description": "Retrieve all `Track` objects.\n",
+                "summary": "Retrieve all `Track` objects.\n",
                 "operationId": "listTracks",
                 "parameters": [
                     {
@@ -47,7 +47,7 @@
                 "tags": [
                     "track"
                 ],
-                "description": "Creates a new `Track` object.",
+                "summary": "Creates a new `Track` object.",
                 "operationId": "addTrack",
                 "parameters": [
                     {
@@ -75,7 +75,7 @@
                 "tags": [
                     "track"
                 ],
-                "description": "Retrieve a `Track` object.\n",
+                "summary": "Retrieve a `Track` object.\n",
                 "operationId": "getTrack",
                 "parameters": [
                     {
@@ -103,7 +103,7 @@
                     "tracklist",
                     "identification"
                 ],
-                "description": "Creates a `TracklistIdentification` object. Also creates a `TracklistIdentificationRun` numbered 0.",
+                "summary": "Creates a `TracklistIdentification` object. Also creates a `TracklistIdentificationRun` numbered 0.",
                 "operationId": "tracklistIdentification",
                 "consumes": [
                     "multipart/form-data"
@@ -135,7 +135,7 @@
                     "tracklist",
                     "identification"
                 ],
-                "description": "Retrieve a `TracklistIdentification` object.",
+                "summary": "Retrieve a `TracklistIdentification` object.",
                 "operationId": "getTracklistIdentification",
                 "parameters": [
                     {
@@ -159,7 +159,7 @@
                     "tracklist",
                     "identification"
                 ],
-                "description": "Creates a `TracklistIdentificationRun` object. This reruns the identification of the provided file or url.",
+                "summary": "Creates a `TracklistIdentificationRun` object. This reruns the identification of the provided file or url.",
                 "operationId": "rerunTrackIdentification",
                 "parameters": [
                     {
@@ -183,7 +183,7 @@
                     "tracklist",
                     "identification"
                 ],
-                "description": "Modify the content of a `TracklistIdentification` object.",
+                "summary": "Modify the content of a `TracklistIdentification` object.",
                 "operationId": "changeTracklistIdentification",
                 "parameters": [
                     {
@@ -217,7 +217,7 @@
                     "tracklist",
                     "identification"
                 ],
-                "description": "Retrieve a `TracklistIdentificationRun` object.",
+                "summary": "Retrieve a `TracklistIdentificationRun` object.",
                 "operationId": "getTracklistIdentification",
                 "parameters": [
                     {
@@ -249,7 +249,7 @@
                     "track",
                     "identification"
                 ],
-                "description": "Identify a track from an URL or from an uploaded file.",
+                "summary": "Identify a track from an URL or from an uploaded file.",
                 "operationId": "trackIdentification",
                 "consumes": [
                     "multipart/form-data"
@@ -281,7 +281,7 @@
                     "track",
                     "identification"
                 ],
-                "description": "Get a track identification.",
+                "summary": "Get a track identification.",
                 "operationId": "getTrackIdentification",
                 "parameters": [
                     {
@@ -305,7 +305,7 @@
                     "track",
                     "identification"
                 ],
-                "description": "Creates another run for a track identification.",
+                "summary": "Creates another run for a track identification.",
                 "operationId": "rerunTrackIdentification",
                 "parameters": [
                     {
@@ -329,7 +329,7 @@
                     "track",
                     "identification"
                 ],
-                "description": "Modify the content of a track identification",
+                "summary": "Modify the content of a track identification",
                 "operationId": "changeTrackIdentification",
                 "parameters": [
                     {
@@ -363,7 +363,7 @@
                     "track",
                     "identification"
                 ],
-                "description": "Retrieve a `TrackIdentificationRun` object.",
+                "summary": "Retrieve a `TrackIdentificationRun` object.",
                 "operationId": "getTrackIdentification",
                 "parameters": [
                     {
@@ -394,7 +394,7 @@
                 "tags": [
                     "me"
                 ],
-                "description": "Retrieve the current and past billing information.",
+                "summary": "Retrieve the current and past billing information.",
                 "operationId": "myBills",
                 "responses": {
                     "200": {
@@ -414,7 +414,7 @@
                 "tags": [
                     "me"
                 ],
-                "description": "Retrieve the callbacks that you set up to be notified of changes in tracklist or track identification, or track territory.",
+                "summary": "Retrieve the callbacks that you set up to be notified of changes in tracklist or track identification, or track territory.",
                 "operationId": "myCallbacks",
                 "responses": {
                     "200": {
@@ -429,7 +429,7 @@
                 "tags": [
                     "me"
                 ],
-                "description": "Update your callbacks",
+                "summary": "Update your callbacks",
                 "operationId": "changeCallbacks",
                 "consumes": [
                     "multipart/form-data"
@@ -471,8 +471,7 @@
             "type": "object",
             "properties": {
                 "sourceUrl": {
-                    "type": "string",
-                    "format": "url"
+                    "type": "string"
                 },
                 "curator": {
                     "type": "string"
@@ -517,7 +516,6 @@
                 },
                 "url": {
                     "type": "string",
-                    "format": "url",
                     "readOnly": true
                 },
                 "filename": {
@@ -614,7 +612,6 @@
                 },
                 "url": {
                     "type": "string",
-                    "format": "url",
                     "readOnly": true
                 },
                 "filename": {
@@ -720,8 +717,7 @@
                     "type": "string"
                 },
                 "cover": {
-                    "type": "string",
-                    "format": "url"
+                    "type": "string"
                 }
             }
         },
@@ -730,16 +726,13 @@
             "type": "object",
             "properties": {
                 "callbackTrackIdentification": {
-                    "type": "string",
-                    "format": "url"
+                    "type": "string"
                 },
                 "callbackTracklistIdentification": {
-                    "type": "string",
-                    "format": "url"
+                    "type": "string"
                 },
                 "callbackTrackTerritoryChange": {
-                    "type": "string",
-                    "format": "url"
+                    "type": "string"
                 }
             }
         },
