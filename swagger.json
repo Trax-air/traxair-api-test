@@ -98,7 +98,6 @@
         "/identify/tracklist": {
             "post": {
                 "tags": [
-                    "tracklist",
                     "identification"
                 ],
                 "summary": "Creates a `TracklistIdentification` object. Also creates a `TracklistIdentificationRun` numbered 0.",
@@ -130,7 +129,6 @@
         "/identify/tracklist/{identificationId}": {
             "get": {
                 "tags": [
-                    "tracklist",
                     "identification"
                 ],
                 "summary": "Retrieve a `TracklistIdentification` object.",
@@ -155,7 +153,6 @@
             },
             "post": {
                 "tags": [
-                    "tracklist",
                     "identification"
                 ],
                 "summary": "Creates a `TracklistIdentificationRun` object. This reruns the identification of the provided file or url.",
@@ -180,7 +177,6 @@
             },
             "put": {
                 "tags": [
-                    "tracklist",
                     "identification"
                 ],
                 "summary": "Modify the content of a `TracklistIdentification` object.",
@@ -215,7 +211,6 @@
         "/identify/tracklist/{identificationId}/{runNumber}": {
             "get": {
                 "tags": [
-                    "tracklist",
                     "identification"
                 ],
                 "summary": "Retrieve a `TracklistIdentificationRun` object.",
@@ -249,7 +244,6 @@
         "/identify/track": {
             "post": {
                 "tags": [
-                    "track",
                     "identification"
                 ],
                 "summary": "Identify a track from an URL or from an uploaded file.",
@@ -281,7 +275,6 @@
         "/identify/track/{identificationId}": {
             "get": {
                 "tags": [
-                    "track",
                     "identification"
                 ],
                 "summary": "Get a track identification.",
@@ -331,7 +324,6 @@
             },
             "put": {
                 "tags": [
-                    "track",
                     "identification"
                 ],
                 "summary": "Modify the content of a track identification",
@@ -366,7 +358,6 @@
         "/identify/track/{identificationId}/{runNumber}": {
             "get": {
                 "tags": [
-                    "track",
                     "identification"
                 ],
                 "summary": "Retrieve a `TrackIdentificationRun` object.",

@@ -64,7 +64,6 @@ paths:
   /identify/tracklist:
     post:
       tags:
-        - tracklist
         - identification
       summary: "Creates a `TracklistIdentification` object. Also creates a `TracklistIdentificationRun` numbered 0."
       operationId: tracklistIdentification
@@ -85,7 +84,6 @@ paths:
   "/identify/tracklist/{identificationId}":
     get:
       tags:
-        - tracklist
         - identification
       summary: "Retrieve a `TracklistIdentification` object."
       operationId: getTracklistIdentification
@@ -102,7 +100,6 @@ paths:
             $ref: "#/definitions/TracklistIdentification"
     post:
       tags:
-        - tracklist
         - identification
       summary: "Creates a `TracklistIdentificationRun` object. This reruns the identification of the provided file or url."
       operationId: rerunTrackIdentification
@@ -119,7 +116,6 @@ paths:
             $ref: "#/definitions/TracklistIdentificationRun"
     put:
       tags:
-        - tracklist
         - identification
       summary: "Modify the content of a `TracklistIdentification` object."
       operationId: changeTracklistIdentification
@@ -142,7 +138,6 @@ paths:
   "/identify/tracklist/{identificationId}/{runNumber}":
     get:
       tags:
-        - tracklist
         - identification
       summary: "Retrieve a `TracklistIdentificationRun` object."
       operationId: getTracklistIdentification
@@ -165,7 +160,6 @@ paths:
   /identify/track:
     post:
       tags:
-        - track
         - identification
       summary: Identify a track from an URL or from an uploaded file.
       operationId: trackIdentification
@@ -186,7 +180,6 @@ paths:
   "/identify/track/{identificationId}":
     get:
       tags:
-        - track
         - identification
       summary: Get a track identification.
       operationId: getTrackIdentification
@@ -220,7 +213,6 @@ paths:
             $ref: "#/definitions/TrackIdentificationRun"
     put:
       tags:
-        - track
         - identification
       summary: Modify the content of a track identification
       operationId: changeTrackIdentification
@@ -243,7 +235,6 @@ paths:
   "/identify/track/{identificationId}/{runNumber}":
     get:
       tags:
-        - track
         - identification
       summary: "Retrieve a `TrackIdentificationRun` object."
       operationId: getTrackIdentification
